@@ -1,9 +1,5 @@
 <template>
-  <div class="demo">
-    <Button type="danger">危险按钮</Button>
-  </div>
+  <RouterView />
 </template>
-<script lang="tsx" setup>
-  import { Button } from 'vant';
-</script>
+<script lang="tsx" setup></script>
 <style lang="less"></style>
