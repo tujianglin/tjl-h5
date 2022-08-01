@@ -1,27 +1,33 @@
-import type { ConfigEnv, UserConfig } from 'vite';
+import type { ConfigEnv, UserConfig, PluginOption } from 'vite';
 import vue from '@vitejs/plugin-vue';
+import vueJsx from '@vitejs/plugin-vue-jsx';
+import legacy from '@vitejs/plugin-legacy';
 import { resolve } from 'path';
 
 function pathResolve(dir: string) {
   return resolve(process.cwd(), '.', dir);
 }
 
-export default ({}: ConfigEnv): UserConfig => {
+export default ({ command }: ConfigEnv): UserConfig => {
+  const isBuild = command === 'build';
+
+  const vitePlugins: (PluginOption | PluginOption[])[] = [vue(), vueJsx()];
+
+  isBuild && vitePlugins.push(legacy());
+
   return {
     resolve: {
       alias: [
-        // /@/xxxx => src/xxxx
         {
           find: /\/@\//,
           replacement: pathResolve('src') + '/',
         },
-        // /#/xxxx => types/xxxx
         {
           find: /\/#\//,
           replacement: pathResolve('types') + '/',
         },
       ],
     },
-    plugins: [vue()],
+    plugins: vitePlugins,
   };
 };
