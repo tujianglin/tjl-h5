@@ -2,6 +2,7 @@ import type { ConfigEnv, UserConfig, PluginOption } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import vueJsx from '@vitejs/plugin-vue-jsx';
 import legacy from '@vitejs/plugin-legacy';
+import postCssPxToRem from 'postcss-pxtorem';
 import { resolve } from 'path';
 
 function pathResolve(dir: string) {
@@ -29,5 +30,15 @@ export default ({ command }: ConfigEnv): UserConfig => {
       ],
     },
     plugins: vitePlugins,
+    css: {
+      preprocessorOptions: {
+        less: {
+          javascriptEnabled: true,
+        },
+      },
+      postcss: {
+        plugins: [postCssPxToRem({ rootValue: 16, propList: ['*'] })],
+      },
+    },
   };
 };

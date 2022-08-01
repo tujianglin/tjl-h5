@@ -138,6 +138,7 @@
     "pnpm",
     "antd",
     "unqualify",
-    "semibold"
+    "semibold",
+    "windicss"
   ],
 }
