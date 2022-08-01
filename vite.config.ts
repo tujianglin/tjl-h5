@@ -3,6 +3,7 @@ import vue from '@vitejs/plugin-vue';
 import vueJsx from '@vitejs/plugin-vue-jsx';
 import legacy from '@vitejs/plugin-legacy';
 import postCssPxToRem from 'postcss-pxtorem';
+import autoprefixer from 'autoprefixer';
 import { resolve } from 'path';
 
 function pathResolve(dir: string) {
@@ -37,7 +38,20 @@ export default ({ command }: ConfigEnv): UserConfig => {
         },
       },
       postcss: {
-        plugins: [postCssPxToRem({ rootValue: 16, propList: ['*'] })],
+        plugins: [
+          autoprefixer({
+            overrideBrowserslist: [
+              'Android 4.1',
+              'iOS 7.1',
+              'Chrome > 31',
+              'ff > 31',
+              'ie >= 8',
+              'last 10 versions', // 所有主流浏览器最近10版本用
+            ],
+            grid: true,
+          }),
+          postCssPxToRem({ rootValue: 16, propList: ['*'] }),
+        ],
       },
     },
   };
