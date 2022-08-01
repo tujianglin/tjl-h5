@@ -1,21 +1,36 @@
-import type { ConfigEnv, UserConfig, PluginOption } from 'vite';
-import vue from '@vitejs/plugin-vue';
-import vueJsx from '@vitejs/plugin-vue-jsx';
-import legacy from '@vitejs/plugin-legacy';
+import type { ConfigEnv, UserConfig } from 'vite';
+import pkg from './package.json';
+import dayjs from 'dayjs';
+import { loadEnv } from 'vite';
+
 import postCssPxToRem from 'postcss-pxtorem';
 import autoprefixer from 'autoprefixer';
+
+import { createVitePlugin } from './build/vite/plugin';
+import { wrapperEnv } from './build/utils';
+import { createProxy } from './build/vite/proxy';
 import { resolve } from 'path';
 
 function pathResolve(dir: string) {
   return resolve(process.cwd(), '.', dir);
 }
 
-export default ({ command }: ConfigEnv): UserConfig => {
+const { dependencies, devDependencies, name, version } = pkg;
+const __APP_INFO__ = {
+  pkg: { dependencies, devDependencies, name, version },
+  lastBuildTime: dayjs().format('YYYY-MM-DD HH:mm:ss'),
+};
+
+export default ({ command, mode }: ConfigEnv): UserConfig => {
+  const root = process.cwd();
+
+  const env = loadEnv(mode, root);
+
+  const viteEnv = wrapperEnv(env);
+
+  const { VITE_PORT, VITE_DROP_CONSOLE, VITE_PROXY } = viteEnv;
+
   const isBuild = command === 'build';
-
-  const vitePlugins: (PluginOption | PluginOption[])[] = [vue(), vueJsx()];
-
-  isBuild && vitePlugins.push(legacy());
 
   return {
     resolve: {
@@ -30,7 +45,25 @@ export default ({ command }: ConfigEnv): UserConfig => {
         },
       ],
     },
-    plugins: vitePlugins,
+    server: {
+      open: true,
+      host: true,
+      port: VITE_PORT,
+      proxy: createProxy(VITE_PROXY),
+    },
+    esbuild: {
+      pure: VITE_DROP_CONSOLE ? ['console.log', 'debugger'] : [],
+    },
+    build: {
+      target: 'es2015',
+      cssTarget: 'chrome80',
+      outDir: 'dist',
+      chunkSizeWarningLimit: 2000,
+    },
+    define: {
+      __INTLIFY_PROD_DEVTOOLS__: false,
+      __APP_INFO__: JSON.stringify(__APP_INFO__),
+    },
     css: {
       preprocessorOptions: {
         less: {
@@ -54,5 +87,6 @@ export default ({ command }: ConfigEnv): UserConfig => {
         ],
       },
     },
+    plugins: createVitePlugin(viteEnv, isBuild),
   };
 };
