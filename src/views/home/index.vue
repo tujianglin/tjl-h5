@@ -13,7 +13,7 @@
               router.push({ path: '/login' });
             }}
           >
-            home页
+            跳转登录页
           </Button>
         </div>
       );

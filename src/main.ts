@@ -4,6 +4,7 @@ import App from './App.vue';
 
 import { router, setupRouter } from '/@/router';
 import { setupRouterGuard } from '/@/router/guard';
+import { setupStore } from '/@/store';
 
 async function bootstrap() {
   const app = createApp(App);
@@ -13,6 +14,9 @@ async function bootstrap() {
 
   // 路由守卫
   setupRouterGuard(router);
+
+  // 配置数据存储库
+  setupStore(app);
 
   app.mount('#app');
 }
