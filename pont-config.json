@@ -1,0 +1,24 @@
+{
+  "origins": [
+    {
+      "originUrl": "",
+      "name": "fms",
+      "usingMultipleOrigins": true
+    }
+  ],
+  "templatePath": "./pont/pontTemplate",
+  "outDir": "./src/api",
+  "mocks": {
+    "enable": false
+  },
+  "prettierConfig": {
+    "printWidth": 100,
+    "semi": true,
+    "vueIndentScriptAndStyle": true,
+    "singleQuote": true,
+    "trailingComma": "all",
+    "proseWrap": "never",
+    "htmlWhitespaceSensitivity": "strict",
+    "endOfLine": "auto"
+  }
+}
