@@ -3,6 +3,7 @@ import { getAppListResultModel } from './model/appModel';
 
 enum Api {
   GetAppList = '/blade-system/application/list',
+  Get = '/get',
 }
 
 export const getList = () => {
@@ -11,4 +12,8 @@ export const getList = () => {
     { url: Api.GetAppList },
     { isTransformResponse: true },
   );
+};
+
+export const getMock = () => {
+  return defHttp.get({ url: Api.Get });
 };

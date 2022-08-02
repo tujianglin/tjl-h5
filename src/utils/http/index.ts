@@ -25,7 +25,7 @@ function createAxios(opt?: Partial<CreateAxiosOptions>) {
           /** 是否获取 res.data 的数据 */
           isReturnOneResponse: false,
           /** 是否获取 res.data.data 的数据 */
-          isTransformResponse: false,
+          isTransformResponse: true,
         },
       },
       opt || {},

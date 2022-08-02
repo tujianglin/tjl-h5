@@ -3,10 +3,14 @@
   import { useRouter } from 'vue-router';
   import { Button } from 'vant';
   import { useCounterStore } from '/@/store/modules';
+  import { getMock } from '/@/api/login';
   export default defineComponent({
     setup() {
       const router = useRouter();
       const store = useCounterStore();
+      getMock().then((res) => {
+        console.log(res);
+      });
       return () => (
         <div>
           <Button
