@@ -26,6 +26,7 @@ export interface RequestOptions {
 
 /** 创建实例配置类型 */
 export interface CreateAxiosOptions extends AxiosRequestConfig {
+  authenticationScheme?: string;
   /** 数据处理方法 */
   transform?: AxiosTransform;
   /** 请求配置 */
@@ -34,6 +35,11 @@ export interface CreateAxiosOptions extends AxiosRequestConfig {
 
 /** 数据处理方法类 */
 export abstract class AxiosTransform {
+  /** 请求之前拦截 */
+  requestInterceptors?: (
+    config: AxiosRequestConfig,
+    options: CreateAxiosOptions,
+  ) => AxiosRequestConfig;
   /** 响应头数据处理 */
   transformRequestHook?: (res: AxiosResponse<Result>, options: RequestOptions) => any;
   /** 请求之前处理config */

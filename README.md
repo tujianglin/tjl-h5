@@ -15,3 +15,12 @@
 - `vant`: UI 库
 - `mock`: mock 假数据
 - `dingtalk-jsapi`: 钉钉 jsapi
+
+## 钉钉微应用
+
+### 登录案例
+
+在 `/src/views/dingding` 这个目录下有两个页面
+
+- login 是登录页
+- home 是首页

@@ -14,11 +14,27 @@ export class Axios {
   constructor(options) {
     this.options = options;
     this.axiosInstance = axios.create(options);
+    this.setupInterceptors();
   }
 
   private getTransform() {
     const { transform } = this.options;
     return transform;
+  }
+
+  /** 拦截器配置 */
+  private setupInterceptors() {
+    const transform = this.getTransform();
+    if (!transform) {
+      return;
+    }
+    const { requestInterceptors } = transform;
+    this.axiosInstance.interceptors.request.use((config: AxiosRequestConfig) => {
+      if (requestInterceptors && isFunction(requestInterceptors)) {
+        config = requestInterceptors(config, this.options);
+      }
+      return config;
+    }, undefined);
   }
 
   /** get请求 */
@@ -54,7 +70,6 @@ export class Axios {
     if (beforeRequestHook && isFunction(beforeRequestHook)) {
       conf = beforeRequestHook(conf, opt);
     }
-
     return new Promise((resolve, reject) => {
       this.axiosInstance
         .request<any, AxiosResponse<Result>>(conf)

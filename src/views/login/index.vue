@@ -1,11 +1,8 @@
 <script lang="tsx">
-  import { defineComponent, getCurrentInstance } from 'vue';
-
+  import { defineComponent } from 'vue';
   export default defineComponent({
     setup() {
-      const instance = getCurrentInstance();
-      console.log(instance?.proxy?.$dd);
-      return () => <div>11111</div>;
+      return () => <div>111</div>;
     },
   });
 </script>
