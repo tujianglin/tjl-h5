@@ -13,3 +13,5 @@
 - `pinia`: 数据存储器
 - `pont`: 接口代码生成
 - `vant`: UI 库
+- `mock`: mock 假数据
+- `dingtalk-jsapi`: 钉钉 jsapi

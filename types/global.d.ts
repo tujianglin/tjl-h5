@@ -6,6 +6,7 @@ import type {
   FunctionalComponent,
   PropType as VuePropType,
 } from 'vue';
+import dd from 'dingtalk-jsapi';
 
 declare global {
   const __APP_INFO__: {
@@ -90,4 +91,11 @@ declare module 'vue' {
   export type JSXComponent<Props = any> =
     | { new (): ComponentPublicInstance<Props> }
     | FunctionalComponent<Props>;
+}
+
+/** vue 全局属性自定义类型 */
+declare module 'vue' {
+  interface ComponentCustomProperties {
+    $dd: typeof dd;
+  }
 }
