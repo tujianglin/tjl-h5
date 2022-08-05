@@ -62,6 +62,7 @@
     "postcss-less": "^6.0.0",
     "postcss-pxtorem": "^6.0.0",
     "prettier": "^2.7.1",
+    "qs": "^6.11.0",
     "rimraf": "^3.0.2",
     "rollup": "^2.77.2",
     "stylelint": "^14.9.1",

@@ -14,3 +14,9 @@ export const getDingLogin = (params) => {
     params,
   });
 };
+
+export const getWxLogin = (source) => {
+  return defHttp.get<any>({
+    url: `/blade-auth/oauth/render/${source}`,
+  });
+};
