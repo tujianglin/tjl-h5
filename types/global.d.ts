@@ -7,6 +7,7 @@ import type {
   PropType as VuePropType,
 } from 'vue';
 import dd from 'dingtalk-jsapi';
+import wx from 'weixin-js-sdk';
 
 declare global {
   const __APP_INFO__: {
@@ -97,5 +98,6 @@ declare module 'vue' {
 declare module 'vue' {
   interface ComponentCustomProperties {
     $dd: typeof dd;
+    $wx: typeof wx;
   }
 }
