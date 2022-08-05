@@ -28,6 +28,7 @@ export const useDingStore = defineStore('ding', {
       const res = await getDingInfo(params);
       if (res.access_token) {
         this.token = res.access_token;
+        this.oauthId = res.oauth_id;
         Local.set(LocalEnum.TOKEN, this.token);
       } else {
         this.oauthId = res.oauthId;

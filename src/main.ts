@@ -11,7 +11,6 @@ import { setupStore } from '/@/store';
 
 async function bootstrap() {
   const app = createApp(App);
-
   // 当前环境是钉钉 则全局挂载 钉钉的jsapi
   if (dd.env.platform !== 'notInDingTalk') {
     app.config.globalProperties.$dd = dd;
