@@ -17,7 +17,11 @@
       const res = await $dd.runtime.permission.requestAuthCode({
         corpId: 'ding648462dcbd460319acaaa37764f94726',
       });
-      dingStore.dingLogin(res.code);
+      const params = {
+        code: res.code,
+        source: 'dingtalk',
+      };
+      dingStore.dingLogin(params);
     }
     // 企微登录
     if ($wx) {

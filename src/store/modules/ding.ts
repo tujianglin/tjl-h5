@@ -20,11 +20,7 @@ export const useDingStore = defineStore('ding', {
   },
   actions: {
     /** 钉钉登录 */
-    async dingLogin(code) {
-      const params = {
-        code,
-        source: 'dingtalk',
-      };
+    async dingLogin(params) {
       const res = await getDingInfo(params);
       if (res.access_token) {
         this.token = res.access_token;

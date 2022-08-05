@@ -5,6 +5,7 @@
  */
 
 import qs from 'qs';
+
 export const generateOAuthUrl = (url?: any) => {
   const redirectUri = url || 'http://frp.linkvision.cloud:33001/';
   const searchObj = {
