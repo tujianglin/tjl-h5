@@ -21,7 +21,11 @@ export const useDingStore = defineStore('ding', {
   actions: {
     /** 钉钉登录 */
     async dingLogin(code) {
-      const res = await getDingInfo(code);
+      const params = {
+        code,
+        source: 'dingtalk',
+      };
+      const res = await getDingInfo(params);
       if (res.access_token) {
         this.token = res.access_token;
         Local.set(LocalEnum.TOKEN, this.token);
@@ -36,7 +40,7 @@ export const useDingStore = defineStore('ding', {
     },
     /** 用户登录 */
     async userLogin(form) {
-      const data = merge(form, { oauthId: this.oauthId });
+      const data = merge(form, { oauthId: this.oauthId, source: 'dingtalk' });
       const res = await getDingLogin(data);
       this.token = res.access_token;
       Local.set(LocalEnum.TOKEN, this.token);
