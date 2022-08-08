@@ -750,3 +750,5 @@ declare namespace WeixinJsSdk {
 declare module 'weixin-js-sdk' {
   export = WeixinJsSdk;
 }
+
+declare function name(params: any): void;
