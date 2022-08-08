@@ -1,17 +1,21 @@
 <script lang="tsx">
   import { defineComponent, reactive } from 'vue';
   import { Form, Field, CellGroup, Button } from 'vant';
-  import { useDingStore } from '/@/store/modules/login';
+  import { useLoginStore } from '/@/store/modules/login';
+  import { useInstance } from '/@/hooks/web/useInstance';
+  import { EnvEnum } from '/@/enums/storageEnum';
 
   export default defineComponent({
     setup() {
-      const dingStore = useDingStore();
+      const loginStore = useLoginStore();
+      const { $dd } = useInstance();
       const formState = reactive({
         username: 'admin',
         password: '123456',
+        source: $dd ? EnvEnum.DD : EnvEnum.WX,
       });
-      const onSubmit = (value) => {
-        dingStore.userLogin(value);
+      const onSubmit = () => {
+        loginStore.userLogin(formState);
       };
       return () => (
         <div class="login-form">

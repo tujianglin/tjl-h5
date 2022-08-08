@@ -1,16 +1,16 @@
 <script lang="tsx">
   import { defineComponent } from 'vue';
   import { Button } from 'vant';
-  import { useDingStore } from '/@/store/modules/login';
+  import { useLoginStore } from '/@/store/modules/login';
   export default defineComponent({
     setup() {
-      const dingStore = useDingStore();
+      const loginStore = useLoginStore();
       return () => (
         <div>
           <Button
             type={'primary'}
             onClick={() => {
-              dingStore.dingLogout();
+              loginStore.Logout();
             }}
           >
             跳转登录页

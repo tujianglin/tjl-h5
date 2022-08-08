@@ -1,5 +1,6 @@
 export enum LocalEnum {
   TOKEN = 'token',
+  AUTHID = 'oauthId',
 }
 
 export enum EnvEnum {
