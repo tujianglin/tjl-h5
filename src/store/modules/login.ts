@@ -1,11 +1,11 @@
 import { defineStore } from 'pinia';
-import { codeLogin, appLogin } from '/@/api/login';
+import { codeLogin, appLogin, getWxSign } from '/@/api/login';
 import { Local } from '/@/utils/storage';
 import { LocalEnum, EnvEnum } from '/@/enums/storageEnum';
 import { router } from '/@/router';
 import { merge } from 'lodash-es';
 import { useInstance } from '/@/hooks/web/useInstance';
-import { checkRedirect } from '/@/utils/wx';
+import { checkRedirect, qywxJssdkInit } from '/@/utils/wx';
 
 interface IUseLoginState {
   token?: string;
@@ -14,7 +14,7 @@ interface IUseLoginState {
 
 export const useLoginStore = defineStore('login', {
   state: (): IUseLoginState => {
-    return { token: Local.get(LocalEnum.TOKEN) || '', oauthId: '' };
+    return { token: Local.get(LocalEnum.TOKEN) || '', oauthId: Local.get(LocalEnum.AUTHID) || '' };
   },
   getters: {
     getToken(): string | undefined {
@@ -35,6 +35,7 @@ export const useLoginStore = defineStore('login', {
         oauthId = res.oauthId as string;
       }
       this.oauthId = oauthId;
+      Local.set(LocalEnum.AUTHID, this.oauthId);
     },
     /** 退出登录 */
     Logout() {
@@ -50,6 +51,7 @@ export const useLoginStore = defineStore('login', {
       this.token = res.access_token;
       this.oauthId = res.oauth_id;
       Local.set(LocalEnum.TOKEN, this.token);
+      Local.set(LocalEnum.AUTHID, this.oauthId);
       router.push('/home');
     },
     /** 多端登录 */
@@ -78,6 +80,15 @@ export const useLoginStore = defineStore('login', {
           this.codeLogin(params);
         }
       }
+    },
+    /** 微信签名 */
+    async getSign() {
+      const res = await getWxSign({ url: 'http://192.168.1.191:3000' });
+      const params = {
+        ...res,
+        agentid: '1000004',
+      };
+      qywxJssdkInit(params);
     },
   },
 });

@@ -5,6 +5,8 @@
  */
 
 import qs from 'qs';
+import wx from 'weixin-js-sdk';
+import jsdk from 'wecomjsdk';
 
 export const generateOAuthUrl = (url?: any) => {
   const redirectUri = url || 'http://frp.linkvision.cloud:33001/';
@@ -42,3 +44,45 @@ export const checkRedirect = () => {
     };
   }
 };
+
+// 企微 JSSDK 初始化
+export function qywxJssdkInit(params: any) {
+  wx.config({
+    beta: false,
+    debug: false,
+    appId: params.appId,
+    timestamp: params.timestamp,
+    nonceStr: params.nonceStr,
+    signature: params.signature,
+    jsApiList: ['onMenuShareAppMessage'],
+  });
+  wx.ready(function () {
+    console.log('微信sdk基础环境初始化成功');
+    wxReady(params);
+  });
+
+  wx.error(function (err) {
+    console.log('jWeixin.error:', err);
+  });
+}
+
+function wxReady(config: any) {
+  jsdk.agentConfig({
+    corpid: config.appId, // 必填，企业微信的corpid，必须与当前登录的企业一致
+    agentid: config.agentId, // 必填，企业微信的应用id （e.g. 1000247）
+    timestamp: config.timestamp, // 必填，生成签名的时间戳
+    nonceStr: config.nonceStr, // 必填，生成签名的随机串
+    signature: config.appSignature, // 必填，签名，见附录-JS-SDK使用权限签名算法
+    jsApiList: [],
+    success: function () {
+      console.log('企微应用初始化成功，相关应用特殊API需要在这之后触发');
+    },
+    fail: function (err) {
+      if (err.errMsg.indexOf('function not exist') > -1) {
+        alert('版本过低请升级');
+      } else {
+        alert(err + JSON.stringify(err));
+      }
+    },
+  });
+}

@@ -4,18 +4,20 @@
   import { useLoginStore } from '/@/store/modules/login';
   import { useInstance } from '/@/hooks/web/useInstance';
   import { EnvEnum } from '/@/enums/storageEnum';
-
   export default defineComponent({
     setup() {
       const loginStore = useLoginStore();
-      const { $dd } = useInstance();
+      const { $dd, $wx } = useInstance();
       const formState = reactive({
         username: 'admin',
         password: '123456',
         source: $dd ? EnvEnum.DD : EnvEnum.WX,
       });
-      const onSubmit = () => {
-        loginStore.userLogin(formState);
+      const onSubmit = async () => {
+        await loginStore.userLogin(formState);
+        if ($wx) {
+          await loginStore.getSign();
+        }
       };
       return () => (
         <div class="login-form">
