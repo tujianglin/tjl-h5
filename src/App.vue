@@ -3,9 +3,10 @@
 </template>
 <script lang="tsx" setup>
   import { watchEffect } from 'vue';
-  import { useDingStore } from '/@/store/modules/ding';
+  import { useDingStore } from '/@/store/modules/login';
   import { useInstance } from '/@/hooks/web/useInstance';
-  import { checkRedirect } from './utils/wxRedirct';
+  import { EnvEnum } from '/@/enums/storageEnum';
+  import { checkRedirect } from '/@/utils/wx';
 
   const dingStore = useDingStore();
 
@@ -19,7 +20,8 @@
       });
       const params = {
         code: res.code,
-        source: 'dingtalk',
+        state: '',
+        source: EnvEnum.DD,
       };
       dingStore.dingLogin(params);
     }
@@ -27,6 +29,11 @@
     if ($wx) {
       const res = checkRedirect();
       console.log(res);
+      const params = {
+        ...res,
+        source: EnvEnum.WX,
+      };
+      dingStore.dingLogin(params);
     }
   });
 </script>

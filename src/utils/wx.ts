@@ -34,7 +34,12 @@ export const checkRedirect = () => {
   if (!codeExist) {
     window.location.replace(generateOAuthUrl());
   } else {
+    console.log(window.location.href);
     const code = qs.parse(window.location.search.slice(1)).code as string;
-    return code;
+    const state = qs.parse(window.location.search.slice(2)).state as string;
+    return {
+      code,
+      state,
+    };
   }
 };

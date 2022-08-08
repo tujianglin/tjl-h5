@@ -1,9 +1,11 @@
 import { defineStore } from 'pinia';
 import { getDingInfo, getDingLogin } from '/@/api/login';
 import { Local } from '/@/utils/storage';
-import { LocalEnum } from '/@/enums/storageEnum';
+import { LocalEnum, EnvEnum } from '/@/enums/storageEnum';
 import { router } from '/@/router';
 import { merge } from 'lodash-es';
+import { useInstance } from '/@/hooks/web/useInstance';
+
 interface IUseDingState {
   token?: string;
   oauthId?: string;
@@ -37,7 +39,8 @@ export const useDingStore = defineStore('ding', {
     },
     /** 用户登录 */
     async userLogin(form) {
-      const data = merge(form, { oauthId: this.oauthId, source: 'dingtalk' });
+      const { $dd } = useInstance();
+      const data = merge(form, { oauthId: this.oauthId, source: $dd ? EnvEnum.DD : EnvEnum.WX });
       const res = await getDingLogin(data);
       this.token = res.access_token;
       Local.set(LocalEnum.TOKEN, this.token);

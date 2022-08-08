@@ -1,7 +1,7 @@
 <script lang="tsx">
   import { defineComponent, reactive } from 'vue';
   import { Form, Field, CellGroup, Button } from 'vant';
-  import { useDingStore } from '/@/store/modules/ding';
+  import { useDingStore } from '/@/store/modules/login';
 
   export default defineComponent({
     setup() {

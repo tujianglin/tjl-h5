@@ -1,7 +1,7 @@
 <script lang="tsx">
   import { defineComponent } from 'vue';
   import { Button } from 'vant';
-  import { useDingStore } from '/@/store/modules/ding';
+  import { useDingStore } from '/@/store/modules/login';
   export default defineComponent({
     setup() {
       const dingStore = useDingStore();
