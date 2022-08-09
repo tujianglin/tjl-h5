@@ -747,8 +747,6 @@ declare namespace WeixinJsSdk {
   function chooseWXPay(options: ChooseWXPayOptions): void;
 }
 
-declare module 'weixin-js-sdk' {
-  export = WeixinJsSdk;
-}
-
-declare function name(params: any): void;
+// declare module 'weixin-js-sdk' {
+//   export = WeixinJsSdk;
+// }

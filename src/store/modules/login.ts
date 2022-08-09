@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { codeLogin, appLogin, getWxSign } from '/@/api/login';
+import { codeLogin, appLogin } from '/@/api/login';
 import { Local } from '/@/utils/storage';
 import { LocalEnum, EnvEnum } from '/@/enums/storageEnum';
 import { router } from '/@/router';
@@ -83,12 +83,7 @@ export const useLoginStore = defineStore('login', {
     },
     /** 微信签名 */
     async getSign() {
-      const res = await getWxSign({ url: 'http://192.168.1.191:3000' });
-      const params = {
-        ...res,
-        agentid: '1000004',
-      };
-      qywxJssdkInit(params);
+      qywxJssdkInit();
     },
   },
 });

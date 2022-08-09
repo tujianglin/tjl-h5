@@ -7,6 +7,7 @@
 import qs from 'qs';
 import wx from 'weixin-js-sdk';
 import jsdk from 'wecomjsdk';
+import { getWxSign } from '/@/api/login/index';
 
 export const generateOAuthUrl = (url?: any) => {
   const redirectUri = url || 'http://frp.linkvision.cloud:33001/';
@@ -46,34 +47,56 @@ export const checkRedirect = () => {
 };
 
 // 企微 JSSDK 初始化
-export function qywxJssdkInit(params: any) {
+export async function qywxJssdkInit() {
+  const params = await getWxSign({ url: 'http://frp.linkvision.cloud:33001/', isAgent: false });
   wx.config({
-    beta: false,
+    beta: true,
     debug: false,
     appId: params.appId,
     timestamp: params.timestamp,
     nonceStr: params.nonceStr,
     signature: params.signature,
-    jsApiList: ['onMenuShareAppMessage'],
-  });
-  wx.ready(function () {
-    console.log('微信sdk基础环境初始化成功');
-    wxReady(params);
+    jsApiList: [
+      'openUserProfile',
+      'selectEnterpriseContact',
+      'chooseImage',
+      'scanQRCode',
+      'shareWechatMessage',
+    ],
   });
 
+  wx.ready(function () {
+    console.log('微信sdk基础环境初始化成功');
+    wxReady();
+  });
+  wx.checkJsApi({
+    jsApiList: [
+      'selectEnterpriseContact',
+      'selectExternalContact',
+      'chooseImage',
+      'scanQRCode',
+      'shareWechatMessage',
+    ], // 需要检测的JS接口列表，所有JS接口列表见附录2,
+    success: function (res) {
+      console.log(res);
+      // 以键值对的形式返回，可用的api值true，不可用为false
+      // 如：{"checkResult":{"chooseImage":true},"errMsg":"checkJsApi:ok"}
+    },
+  });
   wx.error(function (err) {
-    console.log('jWeixin.error:', err);
+    console.log(err);
   });
 }
 
-function wxReady(config: any) {
+async function wxReady() {
+  const params = await getWxSign({ url: 'http://frp.linkvision.cloud:33001', isAgent: true });
   jsdk.agentConfig({
-    corpid: config.appId, // 必填，企业微信的corpid，必须与当前登录的企业一致
-    agentid: config.agentId, // 必填，企业微信的应用id （e.g. 1000247）
-    timestamp: config.timestamp, // 必填，生成签名的时间戳
-    nonceStr: config.nonceStr, // 必填，生成签名的随机串
-    signature: config.appSignature, // 必填，签名，见附录-JS-SDK使用权限签名算法
-    jsApiList: [],
+    corpid: params.appId, // 必填，企业微信的corpid，必须与当前登录的企业一致
+    agentid: '1000004', // 必填，企业微信的应用id （e.g. 1000247）
+    timestamp: params.timestamp, // 必填，生成签名的时间戳
+    nonceStr: params.nonceStr, // 必填，生成签名的随机串
+    signature: params.signature, // 必填，签名，见附录-JS-SDK使用权限签名算法
+    jsApiList: ['selectExternalContact'],
     success: function () {
       console.log('企微应用初始化成功，相关应用特殊API需要在这之后触发');
     },
@@ -81,7 +104,7 @@ function wxReady(config: any) {
       if (err.errMsg.indexOf('function not exist') > -1) {
         alert('版本过低请升级');
       } else {
-        alert(err + JSON.stringify(err));
+        console.log(err);
       }
     },
   });
