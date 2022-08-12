@@ -83,7 +83,7 @@ export const useLoginStore = defineStore('login', {
     },
     /** 微信签名 */
     async getSign() {
-      qywxJssdkInit();
+      await qywxJssdkInit();
     },
   },
 });
